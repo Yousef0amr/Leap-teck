@@ -5,6 +5,7 @@ const CHEF = `${VERSION}/chefs`
 const USER = `${VERSION}/users`
 const ADMIN = `${VERSION}/admin`
 const ORDER = `${VERSION}/orders`
+const CATEGORY = `${VERSION}/categories`
 
 
 
@@ -12,7 +13,8 @@ module.exports = {
     CHEF,
     USER,
     ADMIN,
-    ORDER
+    ORDER,
+    CATEGORY
 }
 
 

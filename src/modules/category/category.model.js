@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const setting = require('./../../config/schemaConfig')
-const serviceSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     logo: {
         type: String,
         required: true
@@ -13,4 +13,4 @@ const serviceSchema = new mongoose.Schema({
 }, setting)
 
 
-module.exports = mongoose.model("Service", serviceSchema)
+module.exports = mongoose.model("Category", categorySchema)
