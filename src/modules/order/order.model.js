@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const setting = require('../../config/schemaConfig');
 const User = require('./../user/user.model')
-const Studio = require('./../studio/studio.model')
+
 const wrap = require('express-async-wrapper')
 const orderSchema = new mongoose.Schema({
     user: {
@@ -9,11 +9,11 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    studio: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Studio",
-        required: true
-    },
+    // studio: {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: "Studio",
+    //     required: true
+    // },
     services: [
         {
             type: mongoose.Schema.ObjectId,
@@ -36,7 +36,7 @@ const orderSchema = new mongoose.Schema({
 orderSchema.post('save', wrap(
     async (doc) => {
         await User.findByIdAndUpdate(doc.user, { $push: { orders: doc._id } });
-        await Studio.findByIdAndUpdate(doc.studio, { $push: { orders: doc._id } });
+        // await Studio.findByIdAndUpdate(doc.studio, { $push: { orders: doc._id } });
     }
 )
 )
@@ -45,7 +45,7 @@ orderSchema.post('remove', wrap(
     async (doc) => {
         await User.findByIdAndUpdate(doc.user, { $pull: { orders: doc._id } });
 
-        await Studio.findByIdAndUpdate(doc.studio, { $pull: { orders: doc._id } });
+        // await Studio.findByIdAndUpdate(doc.studio, { $pull: { orders: doc._id } });
     }
 )
 )

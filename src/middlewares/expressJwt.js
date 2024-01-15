@@ -2,7 +2,7 @@ const { expressjwt } = require('express-jwt');
 const secret = process.env.ACCESS_TOKEN_SECRET
 const endpoints = require('./../utils/endPoints')
 const User = require('./../modules/user/user.model')
-const Studio = require('./../modules/studio/studio.model')
+const Chef = require('./../modules/chef/chef.model')
 const checkUser = require('./../common/DB_operation/checkUserDB')
 const wrap = require('express-async-wrapper')
 
@@ -21,13 +21,10 @@ const userAllowedUrls = [
     { method: 'GET', url: `${endpoints.USER}/favorites` },
     { method: 'POST', url: `${endpoints.USER}/favorites` },
     { method: 'DELETE', url: `${endpoints.USER}/favorites` },
-    { method: 'GET', url: `${endpoints.STUDIO}/popular-studios` },
-    { method: 'GET', url: `${endpoints.STUDIO}` },
 ]
 
-const studioAllowedUrls = [
-    { method: 'GET', url: `${endpoints.STUDIO}/current-studio` },
-    { method: 'PATCH', url: `${endpoints.STUDIO}/current-studio` },
+const chefAllowedUrls = [
+
 ]
 
 const isRevoked = wrap(async (req, token) => {
@@ -47,11 +44,11 @@ const isRevoked = wrap(async (req, token) => {
                 return true
             }
             return true
-        case 'studio':
-            isAllowed = checkUrl(req, studioAllowedUrls);
+        case 'chef':
+            isAllowed = checkUrl(req, chefAllowedUrls);
             if (isAllowed) {
-                const studio = await checkUser(Studio, id)
-                if (studio) {
+                const chef = await checkUser(Chef, id)
+                if (chef) {
                     return false
                 }
                 return true
@@ -86,9 +83,7 @@ const authJwt = wrap(expressjwt({
     {
         path: [
             ...authRegxOperations(endpoints.USER),
-            ...authRegxOperations(endpoints.STUDIO),
-            { url: `${endpoints.CAR}`, method: ["GET", 'OPTIONS'] },
-            { url: `${endpoints.SERVICE}`, method: ["GET", 'OPTIONS'] },
+
         ]
     }
 ))
