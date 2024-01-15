@@ -18,9 +18,7 @@ const adminRouter = express.Router();
 
 
 adminRouter.route('/register')
-    .post(multerConfig().fields([
-        { name: 'logo', maxCount: 1 }
-    ]), validatorRegister(), register);
+    .post(multerConfig().array(), validatorRegister(), register);
 
 adminRouter.route('/login')
     .post(multerConfig().array(), validateRequest(loginSchema), login);

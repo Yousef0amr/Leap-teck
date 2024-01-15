@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const CryptoJS = require("crypto-js");
 const setting = require('./../../config/schemaConfig')
+
+
 const userSchema = new mongoose.Schema({
-    logo: {
-        type: String
-    },
     name: {
         type: String,
         required: true,
@@ -25,36 +24,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    location: {
-        type: { type: String, default: 'Point' },
-        coordinates: [Number],
-    },
-    vehicleType: {
-        type: String,
-        required: true,
-    },
-    brand: {
-        type: String,
-        required: true,
-    },
-    model: {
-        type: String,
-        required: true,
-    },
-    carPlate: {
-        type: String,
-        required: true,
-    },
-    carColor: {
-        type: String,
-        required: true,
-    },
-    car_images: [
-        {
-            type: String,
-            default: ""
-        }
-    ],
     favorites: [
         {
             type: mongoose.Types.ObjectId,

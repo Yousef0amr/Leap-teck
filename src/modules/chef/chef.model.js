@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const setting = require('./../../config/schemaConfig')
+const CryptoJS = require("crypto-js");
+
 
 const chefSchema = new mongoose.Schema({
     personalInfo: {
@@ -25,10 +28,6 @@ const chefSchema = new mongoose.Schema({
             required: true,
             minlength: 8,
         },
-        emailVerfied: {
-            type: Boolean,
-            default: false
-        }
     },
     businessInfo: {
         logo: {
@@ -62,22 +61,31 @@ const chefSchema = new mongoose.Schema({
             required: true
         }
     },
+    role: {
+        type: String,
+        default: 'chef'
+    },
+    isLoggedIn: {
+        type: Boolean,
+        default: false
+    },
     isAccepted: {
         type: Boolean,
         default: false
     }
-}, {
-    timestamps: true,
-});
+}, setting);
 
-chefSchema.virtual('id').get(function () {
-    return this._id.toHexString();
-});
+chefSchema.post('find', (data, next) => {
+    data.map(user => {
+        user.phone = CryptoJS.AES.decrypt(user.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
+    })
+    next()
+})
+chefSchema.post('findOne', (data, next) => {
+    if (data) {
+        data.phone = CryptoJS.AES.decrypt(data.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
+    }
+    next()
+})
 
-chefSchema.set('toJSON', {
-    virtuals: true,
-});
-
-const Chef = mongoose.model('Chef', chefSchema);
-
-module.exports = Chef;
+module.exports = mongoose.model('Chef', chefSchema);

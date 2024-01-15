@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "development") {
     app.use(morgan('combined'))
 }
 
-app.use(authJwt)
+// app.use(authJwt)
 app.use(express.json());
 app.use(helmet())
 //routes

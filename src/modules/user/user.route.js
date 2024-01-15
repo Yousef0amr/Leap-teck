@@ -24,10 +24,7 @@ const getFavorites = require('./controllers/favorites/get_favorites');
 
 
 userRouter.route('/register')
-    .post(multerConfig().fields([
-        { name: 'logo', maxCount: 1 },
-        { name: 'car_images' }
-    ]), validatorRegister(), register);
+    .post(multerConfig().array(), validatorRegister(), register);
 
 userRouter.route('/login')
     .post(multerConfig().array(), validateRequest(loginSchema), login);
@@ -61,12 +58,12 @@ userRouter.route('/current-user')
 //     .get(validateParamsId(), getUser);
 // // // .delete(deleteUser)
 
-userRouter.route('/favorites')
-    .get(getFavorites)
+// userRouter.route('/favorites')
+//     .get(getFavorites)
 
-userRouter.route('/favorites/:id')
-    .post(validateParamsId(), addToFavorites)
-    .delete(validateParamsId(), removeFromFavorites);
+// userRouter.route('/favorites/:id')
+//     .post(validateParamsId(), addToFavorites)
+//     .delete(validateParamsId(), removeFromFavorites);
 
 
 module.exports = userRouter;
