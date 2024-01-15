@@ -1,5 +1,5 @@
 const wrap = require('express-async-wrapper')
-const Category = require('../service.model')
+const Category = require('../category.model')
 const { Success } = require('../../../utils/apiResponse')
 const updateByID = require('../../../common/DB_operation/CRUD/updateByID')
 

@@ -11,7 +11,7 @@ const addCategory = wrap(
 
 
         const logo = await cloudinary.uploader.upload(files.logo[0].path, {
-            folder: `carWashing/services/logo`,
+            folder: `leapTeck/categories/logo`,
             public_id: uuidv4(),
             use_filename: true,
             unique_filename: true,
