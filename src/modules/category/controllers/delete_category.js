@@ -8,7 +8,7 @@ const deleteCategory = wrap(
 
         await Category.findByIdAndDelete(id);
 
-        return Success(res, "service deleted successfully")
+        return Success(res, "category deleted successfully")
     }
 )
 

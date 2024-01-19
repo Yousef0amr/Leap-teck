@@ -5,8 +5,8 @@ const getAll = require('../../../common/DB_operation/CRUD/getAll')
 
 const getAllCategory = wrap(
     async (req, res, next) => {
-        const services = await getAll(Category)
-        return Success(res, "OK", { services })
+        const categories = await getAll(Category)
+        return Success(res, "OK", { categories })
     }
 )
 

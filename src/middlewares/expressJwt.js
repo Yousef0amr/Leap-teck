@@ -84,6 +84,7 @@ const authJwt = wrap(expressjwt({
     {
         path: [
             ...authRegxOperations(endpoints.USER),
+            ...authRegxOperations(endpoints.ADMIN),
             { url: `${endpoints.CHEF}/login`, method: ["POST", "OPTIONS"] },
         ]
     }

@@ -3,9 +3,6 @@ const { Success, ApiError } = require('./../../../../utils/apiResponse')
 const Admin = require('./../../admin.model')
 const hashPassword = require("./../../../../utils/hashPassword")
 const generateToken = require('./../../../../utils/generateToken')
-const CryptoJS = require("crypto-js");
-const cloudinary = require('./../../../../config/cloudinary')
-const { v4: uuidv4 } = require('uuid');
 const checkEmailDB = require('../../../../common/DB_operation/checkEmailDB')
 
 const register = wrap(

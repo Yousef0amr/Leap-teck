@@ -5,6 +5,7 @@ const errorValidationMessages = require('./../utils/errorValidationMessages')
 
 const validateRequest = (schema) => {
     return (req, res, next) => {
+
         const { error, value } = schema.validate(req.body, { abortEarly: false });
 
         if (error) {

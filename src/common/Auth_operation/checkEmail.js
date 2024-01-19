@@ -7,6 +7,7 @@ const checkEmailDB = require('./../DB_operation/checkEmailDB')
 
 const checkEmail = (Model) => wrap(
     async (req, res, next) => {
+
         const { email } = req.body
         const isEmailExist = await checkEmailDB(Model, email)
         if (isEmailExist) {
