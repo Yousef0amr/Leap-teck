@@ -31,8 +31,8 @@ chefRouter.route('/check-email')
 chefRouter.route('/verify-email')
     .post(multerConfig().array(), validateRequest(verifyEmailSchema), verifyEmail);
 
-chefRouter.route('/forget-password')
-    .post(multerConfig().array(), validateRequest(checkEmailSchema), forgetPassword);
+// chefRouter.route('/forget-password')
+//     .post(multerConfig().array(), validateRequest(checkEmailSchema), forgetPassword);
 
 chefRouter.route('/rest-password')
     .post(multerConfig().array(), validateRequest(restPasswordSchema), restPassword);

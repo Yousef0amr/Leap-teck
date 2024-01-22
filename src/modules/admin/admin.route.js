@@ -13,6 +13,8 @@ const { multerConfig } = require('./../../utils/multer');
 const restPassword = require('./controllers/auth/restPassword');
 const resendCode = require('../../common/Auth_operation/resendCode');
 const restPasswordSchema = require('../../common/validationsModel/restPassword');
+const changePasswordSchema = require('../../common/validationsModel/changePassword');
+const changePassword = require('./controllers/auth/changePassword');
 const adminRouter = express.Router();
 
 
@@ -34,6 +36,10 @@ adminRouter.route('/forget-password')
 
 adminRouter.route('/rest-password')
     .post(multerConfig().array(), validateRequest(restPasswordSchema), restPassword);
+
+
+adminRouter.route('/change-password')
+    .post(multerConfig().array(), validateRequest(changePasswordSchema), changePassword);
 
 adminRouter.route('/resend-code')
     .post(multerConfig().array(), validateRequest(checkEmailSchema), resendCode);
