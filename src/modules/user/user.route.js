@@ -11,8 +11,10 @@ const validatorRegister = require('./validators/validator-register');
 const forgetPassword = require('./controllers/auth/forgetPassword');
 const { multerConfig } = require('./../../utils/multer');
 const restPassword = require('./controllers/auth/restPassword');
+const changePassword = require('./controllers/auth/changePassword');
 const resendCode = require('../../common/Auth_operation/resendCode');
 const restPasswordSchema = require('../../common/validationsModel/restPassword');
+const changePasswordSchema = require('../../common/validationsModel/changePassword');
 const getUser = require('./controllers/get_user');
 const userRouter = express.Router({ mergeParams: true });
 const addToFavorites = require('./controllers/favorites/add_to_favorites')
@@ -40,6 +42,9 @@ userRouter.route('/forget-password')
 
 userRouter.route('/rest-password')
     .post(multerConfig().array(), validateRequest(restPasswordSchema), restPassword);
+
+userRouter.route('/change-password')
+    .post(multerConfig().array(), validateRequest(changePasswordSchema), changePassword);
 
 userRouter.route('/resend-code')
     .post(multerConfig().array(), validateRequest(checkEmailSchema), resendCode);

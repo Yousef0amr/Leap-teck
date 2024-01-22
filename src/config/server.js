@@ -19,6 +19,8 @@ if (process.env.NODE_ENV === "development") {
 app.use(authJwt)
 app.use(express.json());
 app.use(helmet())
+app.use(express.static('./../public'))
+
 //routes
 app.use('/', validateQueryLn(), routerOutlet)
 app.all("*", (req, res, next) => next(new ApiError(`Can't find this route: ${req.originalUrl}`, 404)));

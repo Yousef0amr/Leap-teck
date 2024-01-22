@@ -15,7 +15,9 @@ const checkEmail = (Model) => wrap(
         }
         const otpSecret = generateSecret();
         const otp = generateOTP(otpSecret);
+
         await emailService.sendVerificationEmail(email, otp);
+
         return Success(res, 'Check your email for the OTP', { token: otpSecret })
     }
 )
