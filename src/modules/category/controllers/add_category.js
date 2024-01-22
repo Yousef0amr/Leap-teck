@@ -2,26 +2,17 @@ const wrap = require('express-async-wrapper')
 const Category = require('../category.model')
 const { Success } = require('../../../utils/apiResponse')
 const create = require('../../../common/DB_operation/CRUD/create')
-const cloudinary = require('./../../../config/cloudinary')
-const { v4: uuidv4 } = require('uuid');
+const uploadMedia = require('../../../utils/uploadMedia')
+
 const addCategory = wrap(
     async (req, res, next) => {
         const value = { ...req.body }
         const files = req.files
 
-
-        const logo = await cloudinary.uploader.upload(files.logo[0].path, {
-            folder: `leapTeck/categories/logo`,
-            public_id: uuidv4(),
-            use_filename: true,
-            unique_filename: true,
-            resource_type: "auto"
-        })
-
-        value.logo = `${logo.public_id}`
+        value.logo = uploadMedia(files.logo[0], `leapTeck/categories/logo`)
         const category = await create(Category, value)
 
-        return Success(res, { category })
+        return Success(res, 'added Category successfully', { category })
     }
 )
 

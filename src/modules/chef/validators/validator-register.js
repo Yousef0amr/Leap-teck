@@ -1,12 +1,13 @@
 const Joi = require("joi");
 const handleFieldErrors = require('./../../../utils/handleFileErrors');
 const { Validation } = require("../../../utils/apiResponse");
-const errorValidationMessages = require('./../../../utils/errorValidationMessages')
+const errorValidationMessages = require('./../../../utils/errorValidationMessages');
+const fileSchema = require("../../../common/validationsModel/file-schema");
 
 
 const validatorRegister = () => {
     return (req, res, next) => {
-        const data = { ...req.body }
+        const data = { ...req.body, ...req.files }
 
         const schema = Joi.object({
             personalInfo: Joi.object({
@@ -16,13 +17,14 @@ const validatorRegister = () => {
                 password: Joi.string().min(8).required()
             }),
             businessInfo: Joi.object({
-                logo: Joi.optional(),
+                logo: fileSchema.max(1).required(),
                 name: Joi.string().min(3).required(),
                 deliveryNumber: Joi.string().required(),
                 address: Joi.string().required(),
                 description: Joi.string().required(),
-                frontId: Joi.optional(),
-                backId: Joi.optional(),
+                frontId: fileSchema.max(1).required(),
+                backId: fileSchema.max(1).required(),
+                healthCertificate: fileSchema.max(1).required()
             }),
         });
 

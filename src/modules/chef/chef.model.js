@@ -59,7 +59,19 @@ const chefSchema = new mongoose.Schema({
         backId: {
             type: String,
             required: true
-        }
+        },
+        healthCertificate: {
+            type: String,
+            required: true
+        },
+    },
+    ratingsAvg: {
+        type: Number,
+        default: 0
+    },
+    ratingsQuentity: {
+        type: Number,
+        default: 0
     },
     role: {
         type: String,

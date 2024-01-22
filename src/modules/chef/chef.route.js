@@ -20,7 +20,14 @@ const changePassword = require('./controllers/auth/changePassword');
 const chefRouter = express.Router();
 
 chefRouter.route('/register')
-    .post(multerConfig().array(), validatorRegister(), register);
+    .post(multerConfig().fields(
+        [
+            { name: "businessInfo.logo", maxCount: 1 },
+            { name: "businessInfo.frontId", maxCount: 1 },
+            { name: "businessInfo.backId", maxCount: 1 },
+            { name: "businessInfo.healthCertificate", maxCount: 1 },
+        ]
+    ), validatorRegister(), register);
 
 chefRouter.route('/login')
     .post(multerConfig().array(), validateRequest(loginSchema), login);

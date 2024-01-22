@@ -3,7 +3,7 @@ const addCategory = require('./controllers/add_category');
 const getAllCategory = require('./controllers/getAllCategories');
 const updateCategory = require('./controllers/update_category');
 const deleteCategory = require('./controllers/delete_category');
-const validateService = require('./validators/validator-category');
+const validateCategory = require('./validators/validator-category');
 const validateParamsId = require('../../middlewares/validateParamsId');
 const { multerConfig } = require('./../../utils/multer')
 
@@ -12,7 +12,7 @@ const categoryRouter = express.Router();
 categoryRouter.route("/")
     .post(multerConfig().fields([
         { name: 'logo', maxCount: 1 }
-    ]), validateService(), addCategory)
+    ]), validateCategory(), addCategory)
     .get(getAllCategory)
 
 categoryRouter.route("/:id")
