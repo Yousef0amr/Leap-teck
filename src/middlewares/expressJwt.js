@@ -22,6 +22,8 @@ const userAllowedUrls = [
     { method: 'POST', url: `${endpoints.USER}/favorites` },
     { method: 'DELETE', url: `${endpoints.USER}/favorites` },
     { method: 'GET', url: `${endpoints.CATEGORY}/categories` },
+    { method: 'POST', url: `${endpoints.USER}/change-password` },
+
 ]
 
 const chefAllowedUrls = [
