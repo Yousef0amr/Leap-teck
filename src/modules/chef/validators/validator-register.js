@@ -22,6 +22,7 @@ const validatorRegister = () => {
                 deliveryNumber: Joi.string().required(),
                 address: Joi.string().required(),
                 description: Joi.string().required(),
+                categories: Joi.array().min(1).required(),
                 frontId: fileSchema.max(1).required(),
                 backId: fileSchema.max(1).required(),
                 healthCertificate: fileSchema.max(1).required()

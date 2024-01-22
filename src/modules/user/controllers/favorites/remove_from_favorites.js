@@ -7,7 +7,7 @@ const removeFromFavorites = wrap(
         const id = req.params.id;
         const chef = await Chef.findById(id);
         if (!chef) {
-            return next(new ApiError("Studio not founded", 404))
+            return next(new ApiError("Chef not founded", 404))
         }
         const user = await User.findByIdAndUpdate(
             req.userId,
@@ -15,7 +15,7 @@ const removeFromFavorites = wrap(
             { new: true }
         ).populate('favorites');;
         if (!user) {
-            return next(new ApiError("Studio not found in favorites", 404))
+            return next(new ApiError("Chef not found in favorites", 404))
         }
         return Success(res, "Removed from favorites successfully", { favorites: user.favorites })
     }

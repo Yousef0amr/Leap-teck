@@ -48,6 +48,11 @@ const chefSchema = new mongoose.Schema({
             required: true,
             trim: true,
         },
+        categories: [{
+            type: mongoose.Schema.ObjectId,
+            ref: 'Category',
+            required: true
+        }],
         description: {
             type: String,
             trim: true,

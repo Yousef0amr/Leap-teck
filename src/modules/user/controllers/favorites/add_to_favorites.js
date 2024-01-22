@@ -8,7 +8,7 @@ const addToFavorites = wrap(
         const id = req.params.id;
         const chef = await Chef.findById(id);
         if (!chef) {
-            return next(new ApiError("Studio not founded", 404))
+            return next(new ApiError("chef not founded", 404))
         }
         const user = await User.findOneAndUpdate(
             { _id: req.userId, 'favorites': { $nin: id } },
@@ -16,7 +16,7 @@ const addToFavorites = wrap(
             { new: true }
         ).populate('favorites');
         if (!user) {
-            return next(new ApiError("Studio already in favorites", 400))
+            return next(new ApiError("Chef already in favorites", 400))
         }
         return Success(res, "Added to favorites successfully", { favorites: user.favorites })
     }

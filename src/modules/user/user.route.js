@@ -63,12 +63,12 @@ userRouter.route('/current-user')
 //     .get(validateParamsId(), getUser);
 // // // .delete(deleteUser)
 
-// userRouter.route('/favorites')
-//     .get(getFavorites)
+userRouter.route('/favorites')
+    .get(getFavorites)
 
-// userRouter.route('/favorites/:id')
-//     .post(validateParamsId(), addToFavorites)
-//     .delete(validateParamsId(), removeFromFavorites);
+userRouter.route('/favorites/:id')
+    .post(validateParamsId(), addToFavorites)
+    .delete(validateParamsId(), removeFromFavorites);
 
 
 module.exports = userRouter;
