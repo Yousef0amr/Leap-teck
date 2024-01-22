@@ -43,7 +43,7 @@ const chefSchema = new mongoose.Schema({
             type: String,
             trim: true,
         },
-        address: {
+        location: {
             type: String,
             required: true,
             trim: true,
