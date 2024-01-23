@@ -1,33 +1,27 @@
 const multer = require('multer')
+const { ApiError } = require('./apiResponse')
 
-const filesValidation = {
-    image: /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|webp|WEBP|jfif)$/,
-    video: /\.(mp4|avi|flv|wmv|mov|mpeg|3gp|jfif)$/,
-    all: /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|webp|WEBP|mp4|avi|flv|wmv|mov|mpeg|3gp|jfif)$/
-}
-Object.freeze(filesValidation)
-
-const multerConfig = (allowedFiles = filesValidation.image) => {
+const multerConfig = (fileType = 'image') => {
 
     const storage = multer.diskStorage({})
-    const fileFilter = (req, file, cb) => {
-        if (!file.originalname.match(allowedFiles)) {
-            cb("error in upload", false)
+    const fileFilter = (req, file, next) => {
+        if (file.mimetype.startWith(fileType)) {
+            next(null, true)
         } else {
-            cb(null, true)
+            next(new ApiError(`Only ${fileType} allowed`, 400), false)
         }
     }
 
-    const uploads = multer({
+    return multer({
         limits: {
             fileSize: 20 * 1024 * 1024 // 20MB
-        }, fileFilter, storage
-    })
-    return uploads
+        },
+        fileFilter,
+        storage
+    });
 }
 
 
 module.exports = {
-    multerConfig,
-    filesValidation
+    multerConfig
 }

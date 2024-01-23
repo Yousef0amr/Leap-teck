@@ -44,15 +44,16 @@ const chefSchema = new mongoose.Schema({
             trim: true,
         },
         location: {
-            type: String,
-            required: true,
-            trim: true,
+            type: { type: String, default: 'Point' },
+            coordinates: [Number],
         },
-        categories: [{
-            type: mongoose.Schema.ObjectId,
-            ref: 'Category',
-            required: true
-        }],
+        categories: [
+            {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Category',
+                required: true
+            }
+        ],
         description: {
             type: String,
             trim: true,
@@ -92,15 +93,22 @@ const chefSchema = new mongoose.Schema({
     }
 }, setting);
 
+
+chefSchema.pre(['find', 'findOne'], (next) => {
+    this.populate('categories');
+    next();
+});
+
 chefSchema.post('find', (data, next) => {
     data.map(user => {
-        user.phone = CryptoJS.AES.decrypt(user.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
+        user.personalInfo.phone = CryptoJS.AES.decrypt(user.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
     })
     next()
 })
+
 chefSchema.post('findOne', (data, next) => {
     if (data) {
-        data.phone = CryptoJS.AES.decrypt(data.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
+        data.personalInfo.phone = CryptoJS.AES.decrypt(data.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
     }
     next()
 })

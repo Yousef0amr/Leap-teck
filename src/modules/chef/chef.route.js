@@ -15,6 +15,8 @@ const resendCode = require('../../common/Auth_operation/resendCode');
 const restPasswordSchema = require('../../common/validationsModel/restPassword');
 const changePasswordSchema = require('../../common/validationsModel/changePassword');
 const changePassword = require('./controllers/auth/changePassword');
+const getAllChefs = require('./controllers/getAllChefs');
+const getChef = require('./controllers/getChef');
 
 
 const chefRouter = express.Router();
@@ -49,6 +51,19 @@ chefRouter.route('/change-password')
 
 chefRouter.route('/resend-code')
     .post(multerConfig().array(), validateRequest(checkEmailSchema), resendCode);
+
+
+
+//get chefs by category and location
+//get poupular chefs by location
+
+chefRouter.route('/')
+    .post(multerConfig().array(), getAllChefs);
+
+chefRouter.route('/current-chef')
+    .post(multerConfig().array(), getChef);
+
+
 
 
 module.exports = chefRouter;

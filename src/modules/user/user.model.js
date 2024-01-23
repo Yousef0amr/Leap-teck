@@ -27,13 +27,13 @@ const userSchema = new mongoose.Schema({
     favorites: [
         {
             type: mongoose.Types.ObjectId,
-            ref: "Studio"
+            ref: "Chef"
         }
     ],
-    orders: [
+    recommendationsMeals: [
         {
             type: mongoose.Types.ObjectId,
-            ref: "Order"
+            ref: "Category"
         }
     ],
     role: {
