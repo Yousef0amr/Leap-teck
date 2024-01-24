@@ -16,6 +16,8 @@ const resendCode = require('../../common/Auth_operation/resendCode');
 const restPasswordSchema = require('../../common/validationsModel/restPassword');
 const changePasswordSchema = require('../../common/validationsModel/changePassword');
 const getUser = require('./controllers/get_user');
+const updateUser = require('./controllers/update_user');
+const deleteUser = require('./controllers/delete_user');
 const userRouter = express.Router({ mergeParams: true });
 const addToFavorites = require('./controllers/favorites/add_to_favorites')
 const removeFromFavorites = require('./controllers/favorites/remove_from_favorites');
@@ -56,8 +58,9 @@ userRouter.route('/resend-code')
 // // .get(getAllUsers)
 
 userRouter.route('/current-user')
-    // .patch( updateUser)
-    .get(getUser);
+    .patch(updateUser)
+    .get(getUser)
+    .delete(deleteUser);
 
 // userRouter.route('/get-user/:id')
 //     .get(validateParamsId(), getUser);

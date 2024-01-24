@@ -6,7 +6,7 @@ const { userFilter } = require('./../../../utils/filters')
 
 const getUser = wrap(
     async (req, res, next) => {
-        const id = req.userId || req.params.id
+        const id = req.userId
         const user = await User.findById(id, { ...userFilter })
 
         return Success(res, "Ok", { user })

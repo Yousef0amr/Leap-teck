@@ -13,7 +13,6 @@ const chefSchema = new mongoose.Schema({
         phone: {
             type: String,
             required: true,
-            match: /^\d{10}$/,
         },
         email: {
             type: String,
@@ -87,28 +86,24 @@ const chefSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isAccepted: {
-        type: Boolean,
-        default: false
-    }
 }, setting);
 
 
-chefSchema.pre(['find', 'findOne'], (next) => {
-    this.populate('categories');
-    next();
-});
+// chefSchema.pre(['find', 'findOne'], (next) => {
+//     this.populate('businessInfo.categories');
+//     next();
+// });
 
 chefSchema.post('find', (data, next) => {
     data.map(user => {
-        user.personalInfo.phone = CryptoJS.AES.decrypt(user.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
+        user['personalInfo.phone'] = CryptoJS.AES.decrypt(user['personalInfo.phone'], process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
     })
     next()
 })
 
 chefSchema.post('findOne', (data, next) => {
     if (data) {
-        data.personalInfo.phone = CryptoJS.AES.decrypt(data.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
+        data['personalInfo.phone'] = CryptoJS.AES.decrypt(data['personalInfo.phone'], process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
     }
     next()
 })

@@ -1,15 +1,22 @@
 const mongoose = require('mongoose');
 const setting = require('./../../config/schemaConfig');
-const Studio = require('./../studio/studio.model')
+const Meal = require('./../meal/meal.model');
+const Chef = require('./../chef/chef.model');
+
 const reviewSchema = new mongoose.Schema({
-    studio: {
-        type: mongoose.Types.ObjectId,
-        ref: 'Studio',
-        required: true,
-    },
     user: {
         type: mongoose.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
+        required: true,
+    },
+    reviewedItemType: {
+        type: String,
+        enum: ['meal', 'chef'],
+        required: true,
+    },
+    reviewedItem: {
+        type: mongoose.Types.ObjectId,
+        refPath: 'reviewedItemType',
         required: true,
     },
     ratings: {
@@ -23,39 +30,39 @@ const reviewSchema = new mongoose.Schema({
     },
 }, setting);
 
+reviewSchema.pre(/^find/, function (next) {
+    this.populate({ path: 'user', select: 'name' });
+    next();
+});
 
-reviewSchema.pre('/*find/', (next) => {
-    this.populate({ path: 'user', select: 'name' })
-})
+reviewSchema.statics.calcAvgRatingsAndQuantityRatings = async function (reviewedItemType, reviewedItemId) {
+    const result = await this.aggregate([
+        { $match: { reviewedItemType: reviewedItemType, reviewedItem: reviewedItemId } },
+        { $group: { _id: 'reviewedItem', avgRatings: { $avg: '$ratings' }, ratingsQuantity: { $sum: 1 } } },
+    ]);
 
-reviewSchema.statics.calcAvgRatingsAndQuentityRatings = async (studioId) => {
-    const result = await this.aggregate(
-        [
-            { $match: { studio: studioId } },
-            { $group: { _id: "studio", avgRatings: { $avg: '$ratings' }, ratingsQuentity: { $sum: 1 } } }
-        ]
-    )
+    const updateData = result[0] || { avgRatings: 0, ratingsQuantity: 0 };
 
-    if (result) {
-        await Studio.findByIdAndUpdate(studioId, {
-            ratingsAvg: result[0].avgRatings,
-            ratingsQuentity: result[0].ratingsQuentity
-        })
-    } else {
-        await Studio.findByIdAndUpdate(studioId, {
-            ratingsAvg: 0,
-            ratingsQuentity: 0
-        })
+    // Assuming Meal and Chef models have their own update methods
+    if (reviewedItemType === 'meal') {
+        await Meal.findByIdAndUpdate(reviewedItemId, {
+            ratingsAvg: updateData.avgRatings,
+            ratingsQuantity: updateData.ratingsQuantity,
+        });
+    } else if (reviewedItemType === 'chef') {
+        await Chef.findByIdAndUpdate(reviewedItemId, {
+            ratingsAvg: updateData.avgRatings,
+            ratingsQuantity: updateData.ratingsQuantity,
+        });
     }
-}
+};
 
-reviewSchema.post('save', async () => {
-    await this.calcAvgRatingsAndQuentityRatings(this.studio)
-})
+reviewSchema.post('save', async function () {
+    await this.constructor.calcAvgRatingsAndQuantityRatings(this.reviewedItemType, this.reviewedItem);
+});
 
-
-reviewSchema.post('remove', async () => {
-    await this.calcAvgRatingsAndQuentityRatings(this.studio)
-})
+reviewSchema.post('remove', async function () {
+    await this.constructor.calcAvgRatingsAndQuantityRatings(this.reviewedItemType, this.reviewedItem);
+});
 
 module.exports = mongoose.model('Review', reviewSchema);

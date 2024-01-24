@@ -18,16 +18,20 @@ const checkUrl = (req, allowedRoutes) => {
 const userAllowedUrls = [
     { method: 'GET', url: `${endpoints.USER}/current-user` },
     { method: 'PATCH', url: `${endpoints.USER}/current-user` },
+    { method: 'delete', url: `${endpoints.USER}/current-user` },
     { method: 'GET', url: `${endpoints.USER}/favorites` },
     { method: 'POST', url: `${endpoints.USER}/favorites` },
     { method: 'DELETE', url: `${endpoints.USER}/favorites` },
-    { method: 'GET', url: `${endpoints.CATEGORY}/categories` },
+    { method: 'GET', url: `${endpoints.CATEGORY}` },
+    { method: 'GET', url: `${endpoints.CHEF}` },
     { method: 'POST', url: `${endpoints.USER}/change-password` },
 
 ]
 
 const chefAllowedUrls = [
-
+    { method: 'GET', url: `${endpoints.CHEF}/current-chef` },
+    { method: 'PATCH', url: `${endpoints.CHEF}/current-chef` },
+    { method: 'POST', url: `${endpoints.CHEF}/change-password` },
 ]
 
 const isRevoked = wrap(async (req, token) => {

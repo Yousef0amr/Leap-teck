@@ -10,8 +10,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
     },
     phone: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
         type: String,
@@ -26,25 +25,30 @@ const userSchema = new mongoose.Schema({
     },
     favorites: [
         {
-            type: mongoose.Types.ObjectId,
-            ref: "Chef"
-        }
+            type: mongoose.Schema.Types.ObjectId,
+            refPath: 'favoritesModel',
+            enum: ['Chef', 'Meal'],
+        },
     ],
+    favoritesModel: {
+        type: String,
+        enum: ['Chef', 'Meal'],
+    },
     recommendationsMeals: [
         {
             type: mongoose.Types.ObjectId,
             ref: "Category"
         }
     ],
+    signWithGoogle: {
+        type: Boolean,
+        default: false,
+    },
     role: {
         type: String,
         default: "user"
     },
     isLoggedIn: {
-        type: Boolean,
-        default: false
-    },
-    isAccepted: {
         type: Boolean,
         default: false
     }
