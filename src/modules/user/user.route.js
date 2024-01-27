@@ -9,7 +9,7 @@ const verifyEmailSchema = require('./../../common/validationsModel/verifyEmail-s
 const checkEmailSchema = require('./../../common/validationsModel/checkEmail-schema');
 const validatorRegister = require('./validators/validator-register');
 const forgetPassword = require('./controllers/auth/forgetPassword');
-const { multerConfig } = require('./../../utils/multer');
+
 const restPassword = require('./controllers/auth/restPassword');
 const changePassword = require('./controllers/auth/changePassword');
 const resendCode = require('../../common/Auth_operation/resendCode');
@@ -28,43 +28,35 @@ const getFavorites = require('./controllers/favorites/get_favorites');
 
 
 userRouter.route('/register')
-    .post(multerConfig().array(), validatorRegister(), register);
+    .post(validatorRegister(), register);
 
 userRouter.route('/login')
-    .post(multerConfig().array(), validateRequest(loginSchema), login);
+    .post(validateRequest(loginSchema), login);
 
 userRouter.route('/check-email')
-    .post(multerConfig().array(), validateRequest(checkEmailSchema), checkEmail);
+    .post(validateRequest(checkEmailSchema), checkEmail);
 
 userRouter.route('/verify-email')
-    .post(multerConfig().array(), validateRequest(verifyEmailSchema), verifyEmail);
+    .post(validateRequest(verifyEmailSchema), verifyEmail);
 
 userRouter.route('/forget-password')
-    .post(multerConfig().array(), validateRequest(checkEmailSchema), forgetPassword);
+    .post(validateRequest(checkEmailSchema), forgetPassword);
 
 userRouter.route('/rest-password')
-    .post(multerConfig().array(), validateRequest(restPasswordSchema), restPassword);
+    .post(validateRequest(restPasswordSchema), restPassword);
 
 userRouter.route('/change-password')
-    .post(multerConfig().array(), validateRequest(changePasswordSchema), changePassword);
+    .post(validateRequest(changePasswordSchema), changePassword);
 
 userRouter.route('/resend-code')
-    .post(multerConfig().array(), validateRequest(checkEmailSchema), resendCode);
+    .post(validateRequest(checkEmailSchema), resendCode);
 
-
-
-
-// userRouter.route('/')
-// // .get(getAllUsers)
 
 userRouter.route('/current-user')
     .patch(updateUser)
     .get(getUser)
     .delete(deleteUser);
 
-// userRouter.route('/get-user/:id')
-//     .get(validateParamsId(), getUser);
-// // // .delete(deleteUser)
 
 userRouter.route('/favorites')
     .get(getFavorites)

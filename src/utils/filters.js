@@ -5,7 +5,7 @@ const chefFilter = {
     'businessInfo.backId': false, 'businessInfo.healthCertificate': false,
     role: false, isLoggedIn: false, isAccepted: false
 }
-const userFilter = { ...commonFilter, favorites: false }
+const userFilter = { ...commonFilter, favorites: false, _id: false, recommendationsMeals: false }
 
 
 

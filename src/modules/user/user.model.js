@@ -25,15 +25,18 @@ const userSchema = new mongoose.Schema({
     },
     favorites: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            refPath: 'favoritesModel',
-            enum: ['Chef', 'Meal'],
+            favoritesModel: {
+                type: String,
+                enum: ['Chef', 'Meal'],
+            },
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'favoritesModel',
+                enum: ['Chef', 'Meal'],
+            }
         },
     ],
-    favoritesModel: {
-        type: String,
-        enum: ['Chef', 'Meal'],
-    },
+
     recommendationsMeals: [
         {
             type: mongoose.Types.ObjectId,

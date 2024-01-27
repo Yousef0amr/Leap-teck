@@ -1,60 +1,92 @@
 class ApiFeatures {
-    constructor(mongooseQuery, queryString) {
+    constructor(mongooseQuery, queryData, filterOptions) {
         this.mongooseQuery = mongooseQuery;
-        this.queryString = queryString;
+        this.queryData = queryData;
+
+    }
+    pagination = () => {
+        let page = this.queryData.page
+        let size = this.queryData.size
+        if (page <= 0 || !page) page = 1
+        if (size <= 0 || !size) size = 10
+        const skip = size * (page - 1)
+        this.mongooseQuery.skip(skip).limit(size)
+        return this
     }
 
-    pagination() {
-        let page = this.queryString.page * 1 || 1;
-        if (page < 0) {
-            page = 1;
-        }
-        let limit = 2;
-        let skip = (page - 1) * limit;
-        this.mongooseQuery.find({}).skip(skip).limit(limit);
-        this.page = page;
-        return this;
-    }
-
-    sort() {
-        if (this.queryString.sort) {
-            this.queryString.sort = this.queryString.sort.split(",").join(" ");
-            this.mongooseQuery.sort(this.queryString.sort);
-        }
-        return this;
-    }
-    filter() {
-        let filterObj = { ...this.queryString };
-        const queryFilter = ["page", "sort", "select", "search"];
-        queryFilter.forEach((q) => {
-            delete filterObj[q];
+    filter = (filterOptions) => {
+        const excluded = ['sort', 'page', 'size', 'fields', 'searchKey', 'ln', 'status'];
+        console.log(filterOptions)
+        let queryFields = { ...this.queryData, ...filterOptions }; // Merge with filter options
+        console.log(queryFields);
+        // Remove excluded fields
+        excluded.forEach(ele => {
+            delete queryFields[ele];
         });
-        filterObj = JSON.stringify(filterObj);
-        filterObj = filterObj.replace(
-            /(gt|gte|lt|lte|in)/g,
-            (match) => `$${match}`
-        );
-        filterObj = JSON.parse(filterObj);
-        this.mongooseQuery.find(filterObj);
-        return this;
-    }
 
-    select() {
-        if (this.queryString.select) {
-            this.queryString.select = this.queryString.select.split(",").join(" ");
-            this.mongooseQuery.select(this.queryString.select);
+        // Transform fields for comparison operators
+        queryFields = JSON.stringify(queryFields).replace(/lte|lt|gte|gt/g, (match) => {
+            return `$${match}`;
+        });
+
+        queryFields = JSON.parse(queryFields);
+
+        // Apply dynamic filtering for each field
+        Object.keys(queryFields).forEach(field => {
+            switch (field) {
+                case 'ratingsAvg':
+                    this.mongooseQuery.find({ ratingsAvg: queryFields[field] });
+                    break;
+                case 'location':
+                    if (queryFields[field].coordinates) {
+                        this.mongooseQuery.find({
+                            'businessInfo.location': {
+                                $near: {
+                                    $geometry: {
+                                        type: 'Point',
+                                        coordinates: queryFields[field].coordinates,
+                                    },
+                                    $maxDistance: queryFields[field].maxDistance || 10000,
+                                },
+                            },
+                        });
+                    }
+                    break;
+                case 'category':
+                    this.mongooseQuery.find({ 'businessInfo.categories': queryFields[field] });
+                    break;
+                // Add more cases for additional fields as needed
+            }
+        });
+
+        return this;
+    };
+
+
+    sort = () => {
+        if (this.queryData.sort) {
+            this.mongooseQuery.sort(this.queryData.sort.replace(/,/g, ' '))
         }
-        return this;
+        return this
     }
-
-    search() {
-        if (this.queryString.search) {
+    search = (filter = []) => {
+        if (this.queryData.searchKey) {
             this.mongooseQuery.find({
-                name: { $regex: this.queryString.search, $options: "i" }
-            });
+                $or: filter
+            })
         }
-        return this;
+        return this
+    }
+
+    select = () => {
+        this.mongooseQuery.select(this.queryData.fields?.replace(/,/g, ' '))
+        return this
     }
 }
 
-module.exports = ApiFeatures;
+
+
+module.exports = ApiFeatures
+
+
+

@@ -7,13 +7,16 @@ const ApiFeatures = require('./../../../utils/apiFeatures')
 
 const getAllChefs = wrap(
     async (req, res, next) => {
-        const { mongooseQuery, page } = new ApiFeatures(Chef.find({}, { ...chefFilter }), req.query)
+
+        const api = new ApiFeatures(Chef.find({}, { ...chefFilter }), req.query)
             .pagination()
-            .filter()
+            .filter(req.body.filterOptions)
             .sort()
             .select()
 
-        const chefs = await mongooseQuery
+
+
+        const chefs = await api.mongooseQuery
 
         return Success(res, "Ok", { chefs });
     }

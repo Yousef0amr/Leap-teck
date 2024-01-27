@@ -1,10 +1,11 @@
-const { Success } = require("./../../utils/apiResponse")
+const { Success, ApiError } = require("./../../utils/apiResponse")
 const hashPassword = require("./../../utils/hashPassword")
 const wrap = require('express-async-wrapper')
+const verifyPassword = require('./../../utils/verifyPassword')
 
 
 const changePassword = (Model) => wrap(
-    async (req, res) => {
+    async (req, res, next) => {
         const { oldPassword, newPassword } = req.body
         const id = req.userId;
         const user = await Model.findById(id);
