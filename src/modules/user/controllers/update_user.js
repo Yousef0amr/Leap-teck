@@ -13,8 +13,8 @@ const updateUser = wrap(
             value.phone = CryptoJS.AES.encrypt(value.phone, process.env.ENCRYPTION_PHONE_KEY).toString();
         }
 
-        const user = await User.findByIdAndUpdate(id, { ...value }, { new: true, select: '-_id name phone' });
-
+        const user = await User.findByIdAndUpdate(id, { ...value }, { new: true, select: '-_id name phone email signWithGoogle' });
+        user.phone = CryptoJS.AES.decrypt(user.phone, process.env.ENCRYPTION_PHONE_KEY).toString(CryptoJS.enc.Utf8)
         return Success(res, "user updated successfully", { user });
     }
 );
