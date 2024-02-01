@@ -1,7 +1,7 @@
 {
-  "name": "studio-backend",
+  "name": "leap-tech-backend",
   "version": "1.0.0",
-  "description": "car washing studio app backend",
+  "description": "leap tech app backend",
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon index.js",
