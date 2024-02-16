@@ -42,7 +42,7 @@ userRouter.route('/verify-email')
 userRouter.route('/forget-password')
     .post(validateRequest(checkEmailSchema), forgetPassword);
 
-userRouter.route('/rest-password')
+userRouter.route('/reset-password')
     .post(validateRequest(restPasswordSchema), restPassword);
 
 userRouter.route('/change-password')

@@ -43,7 +43,7 @@ chefRouter.route('/verify-email')
 chefRouter.route('/forget-password')
     .post(multerConfig().array(), validateRequest(checkEmailSchema), forgetPassword);
 
-chefRouter.route('/rest-password')
+chefRouter.route('/reset-password')
     .post(multerConfig().array(), validateRequest(restPasswordSchema), restPassword);
 
 chefRouter.route('/change-password')

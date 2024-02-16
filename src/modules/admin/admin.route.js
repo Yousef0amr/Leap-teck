@@ -34,7 +34,7 @@ adminRouter.route('/verify-email')
 adminRouter.route('/forget-password')
     .post(multerConfig().array(), validateRequest(checkEmailSchema), forgetPassword);
 
-adminRouter.route('/rest-password')
+adminRouter.route('/reset-password')
     .post(multerConfig().array(), validateRequest(restPasswordSchema), restPassword);
 
 
