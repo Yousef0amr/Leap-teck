@@ -18,7 +18,7 @@ const changePassword = (Model) => wrap(
         user.password = password;
         await user.save();
 
-        return Success(res, "Password has been changed successfully", { email: user.email })
+        return Success(res, "Password has been changed successfully", null)
     }
 )
 

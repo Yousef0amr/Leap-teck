@@ -8,7 +8,7 @@ const restPassword = (Model) => wrap(
         const { email, newPassword } = req.body
         const password = await hashPassword(newPassword)
         await Model.findOneAndUpdate({ email: email }, { password: password })
-        return Success(res, "Password has been changed successfully", { email })
+        return Success(res, "Password has been changed successfully", null)
     }
 )
 
