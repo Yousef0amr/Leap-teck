@@ -9,7 +9,7 @@ const checkEmailDB = require('../../../../common/DB_operation/checkEmailDB')
 const register = wrap(
     async (req, res, next) => {
         const value = { ...req.body }
-
+        console.log(value)
         const isUserExist = await checkEmailDB(User, value.email)
         if (isUserExist) {
             return next(new ApiError("Email is already registered", 400));
