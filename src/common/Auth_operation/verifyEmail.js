@@ -6,7 +6,6 @@ const { verifyOTP } = require('../../utils/otpService')
 const verifyEmail = wrap(
     async (req, res, next) => {
         const value = { ...req.body }
-        console.log(value)
         const isValid = verifyOTP(value.token, value.otpSecret);
         if (isValid) {
             return Success(res, 'Email verified successfully')

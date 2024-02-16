@@ -15,8 +15,7 @@ const forgetPassword = (Model) => wrap(
         const otpSecret = generateSecret();
         const otp = generateOTP(otpSecret);
         await emailService.sendVerificationEmail(email, otp);
-        const token = await generateToken({ otpSecret }, process.env.VERIFICATION_SECRET_TOKEN, "2m")
-        return Success(res, 'Check your email for the OTP', { token })
+        return Success(res, 'Check your email for the OTP', { token: otpSecret })
     }
 )
 
