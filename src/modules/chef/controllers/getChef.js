@@ -1,6 +1,6 @@
 const wrap = require('express-async-wrapper')
 const { success } = require('./../../../utils/apiResponse')
-const Chef = require('../chef.model')
+const Chef = require('../validators/chef.model')
 const { chefFilter } = require('../../../utils/filters')
 
 

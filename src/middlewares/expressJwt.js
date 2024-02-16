@@ -2,7 +2,7 @@ const { expressjwt } = require('express-jwt');
 const secret = process.env.ACCESS_TOKEN_SECRET
 const endpoints = require('./../utils/endPoints')
 const User = require('./../modules/user/user.model')
-const Chef = require('./../modules/chef/chef.model')
+const Chef = require('../modules/chef/validators/chef.model')
 const checkUser = require('./../common/DB_operation/checkUserDB')
 const wrap = require('express-async-wrapper')
 

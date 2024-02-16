@@ -1,6 +1,6 @@
 const wrap = require('express-async-wrapper')
 const { Success, ApiError } = require('./../../../../utils/apiResponse')
-const Chef = require('./../../chef.model')
+const Chef = require('../../validators/chef.model')
 const hashPassword = require("./../../../../utils/hashPassword")
 const generateToken = require('./../../../../utils/generateToken')
 const checkEmailDB = require('../../../../common/DB_operation/checkEmailDB')

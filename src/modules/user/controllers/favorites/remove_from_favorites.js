@@ -1,6 +1,6 @@
 const wrap = require('express-async-wrapper')
 const User = require('./../../user.model')
-const Chef = require('./../../../chef/chef.model')
+const Chef = require('../../../chef/validators/chef.model')
 const { ApiError, Success } = require('./../../../../utils/apiResponse')
 const removeFromFavorites = wrap(
     async (req, res, next) => {
