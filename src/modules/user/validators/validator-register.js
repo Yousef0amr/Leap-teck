@@ -7,7 +7,7 @@ const errorValidationMessages = require('./../../../utils/errorValidationMessage
 const validatorRegister = () => {
     return (req, res, next) => {
         const data = { ...req.body }
-        console.log(req.body)
+
 
         const schema = Joi.object({
             name: Joi.string().min(3).required(),
