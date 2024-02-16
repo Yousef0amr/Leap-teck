@@ -3,7 +3,7 @@ const { Success, ApiError } = require('./../../utils/apiResponse')
 const { generateSecret, generateOTP } = require('./../../utils/otpService')
 const emailService = require('./../../utils/emailService')
 const checkEmailDB = require('./../DB_operation/checkEmailDB')
-const generateToken = require('./../../utils/generateToken')
+
 
 const forgetPassword = (Model) => wrap(
     async (req, res, next) => {
@@ -11,6 +11,9 @@ const forgetPassword = (Model) => wrap(
         const isEmailExist = await checkEmailDB(Model, email)
         if (!isEmailExist) {
             return next(new ApiError("Email not registered", 404));
+        }
+        if (isEmailExist.signWithGoogle) {
+            return next(new ApiError("Password reset is not available for Google accounts", 400));
         }
         const otpSecret = generateSecret();
         const otp = generateOTP(otpSecret);
